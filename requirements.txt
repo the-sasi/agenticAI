@@ -3,3 +3,5 @@ langchain
 langchain-openai
 azure-storage-blob
 python-dotenv
+typing-extensions
+langgraph-api
