@@ -1,0 +1,12 @@
+{
+  "dependencies": [
+    "langgraph",
+    "langchain",
+    "langchain-openai",
+    "azure-storage-blob",
+    "python-dotenv"
+  ],
+  "graphs": {
+    "file-organizer-agent": "agent/graph.py:agent"
+  }
+}
