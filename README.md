@@ -14,4 +14,5 @@ A simple LangGraph agent that categorizes and moves files between Azure Blob Sto
 3. Run:
    ```
    python run.py
+   langgraph dev
    ```
