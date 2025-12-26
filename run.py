@@ -41,7 +41,7 @@ def main():
 
         # Create initial state
         initial_state = {
-            "files": list_files(),
+            "files": files,
             "current_file": None,
             "category": None,
             "step": 0
@@ -53,7 +53,7 @@ def main():
         for event in agent.stream(initial_state):
             for node, state_update in event.items():
                 logger.info(f"NODE: {node}")
-                logger.info("STATE UPDATE:", state_update)
+                logger.info(f"STATE UPDATE: {state_update}")
 
 
         logger.info("Agent completed successfully")

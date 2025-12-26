@@ -1,0 +1,16 @@
+[project]
+name = "file-organizer-agent"
+version = "0.1.0"
+description = "LangGraph agent that organizes files by category"
+requires-python = ">=3.10"
+dependencies = [
+    "langgraph",
+    "langchain",
+    "langchain-openai",
+    "python-dotenv",
+    "typing-extensions",
+    "grandalf>=0.8",
+]
+
+[project.scripts]
+run-agent = "run:main"
