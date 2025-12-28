@@ -1,20 +1,23 @@
 import os
 import logging
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
+from tools.llm_factory import create_llm
 
 load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-llm = ChatOpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
-    model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-    temperature=0
+# Default LLM instance (backward compatible)
+# Uses LLM_PROVIDER env var to determine which provider to use
+llm = create_llm(
+    provider=os.getenv("LLM_PROVIDER", "openai"),
+    model=os.getenv("LLM_MODEL"),
+    temperature=float(os.getenv("LLM_TEMPERATURE", "0"))
 )
 
 
 def test_llm():
+    """Test LLM connectivity"""
     try:
         logger.info("Testing LLM connection...")
         response = llm.invoke("Say hello in one short sentence.")

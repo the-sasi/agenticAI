@@ -1,11 +1,19 @@
+import os
 import logging
 from agent.state import AgentState
-from tools.llm import llm
+from tools.llm_factory import create_llm
 from tools.blob_tools import move_file, list_files
 from langgraph.graph import StateGraph, END
-from config.settings import MAX_STEPS, CATEGORIES
+from config.settings import MAX_STEPS, CATEGORIES, LLM_PROVIDER, LLM_MODEL, LLM_TEMPERATURE
 
 logger = logging.getLogger(__name__)
+
+# Create LLM for this agent (can be configured per-agent via env vars)
+categorizer_llm = create_llm(
+    provider=os.getenv("CATEGORIZER_LLM_PROVIDER", LLM_PROVIDER),
+    model=os.getenv("CATEGORIZER_LLM_MODEL", LLM_MODEL),
+    temperature=float(os.getenv("CATEGORIZER_LLM_TEMPERATURE", LLM_TEMPERATURE))
+)
 
 
 def pick_file(state: AgentState):
@@ -50,7 +58,7 @@ def decide_category(state: AgentState):
         Return ONLY the best category name.
         """
 
-        category = llm.invoke(prompt).content.strip()
+        category = categorizer_llm.invoke(prompt).content.strip()
         logger.info(f"Category decided: {category} for file: {file}")
 
         state["category"] = category
