@@ -4,6 +4,8 @@ from agent.graph import agent
 from tools.blob_tools import list_files
 from config.settings import validate_env
 
+from dotenv import load_dotenv
+load_dotenv()
 
 def setup_logging():
     """

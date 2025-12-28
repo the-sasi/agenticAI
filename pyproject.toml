@@ -4,9 +4,10 @@ version = "0.1.0"
 description = "LangGraph agent that organizes files by category"
 requires-python = ">=3.10"
 dependencies = [
-    "langgraph",
+    "langgraph[cli]",
     "langchain",
     "langchain-openai",
+    "langchain-groq",
     "python-dotenv",
     "typing-extensions",
     "grandalf>=0.8",

@@ -21,10 +21,21 @@ CATEGORIES = {
 # Agent configuration
 MAX_STEPS = 20
 
-# Required environment variables
-REQUIRED_ENV_VARS = [
-    "OPENAI_API_KEY"
-]
+# LLM Configuration
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai").lower()
+LLM_MODEL = os.getenv("LLM_MODEL")  # None = use provider default
+LLM_TEMPERATURE = float(os.getenv("LLM_TEMPERATURE", "0"))
+
+# Provider-specific API key mapping
+PROVIDER_API_KEYS = {
+    "openai": "OPENAI_API_KEY",
+    "groq": "GROQ_API_KEY",
+}
+
+
+def get_required_api_key(provider: str) -> str:
+    """Get the required API key env var name for a provider"""
+    return PROVIDER_API_KEYS.get(provider.lower(), f"{provider.upper()}_API_KEY")
 
 
 def validate_env():
@@ -32,10 +43,11 @@ def validate_env():
     Validate that all required environment variables are set
     """
     missing = []
-    for var in REQUIRED_ENV_VARS:
-        value = os.getenv(var)
-        if not value:
-            missing.append(var)
+
+    # Validate API key for the configured provider
+    api_key_var = get_required_api_key(LLM_PROVIDER)
+    if not os.getenv(api_key_var):
+        missing.append(api_key_var)
 
     if missing:
         error_msg = f"Missing required environment variables: {', '.join(missing)}"
@@ -51,5 +63,5 @@ def validate_env():
         logger.info(f"Destination directory does not exist, creating: {DEST_DIR}")
         os.makedirs(DEST_DIR, exist_ok=True)
 
-    logger.info("All environment variables validated successfully")
+    logger.info(f"Environment validated. LLM Provider: {LLM_PROVIDER}")
     return True
